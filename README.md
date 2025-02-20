@@ -1,10 +1,10 @@
-# Shortly - URL Shortener
+ Shortly - URL Shortener
 
 
 Shortly is a lightweight and efficient URL shortener built using Go. It allows you to shorten URLs, which can then be easily shared. The app also handles redirecting users to the original URL and serves a custom 404 page when a short URL is not found.
 
+> [!NOTE]
 > This Project is totaly for fun, there is a [todo](todo.md) list if you want to contribute on this project. 
-<!-- {blockquote:.is-info} -->
 
 ## Features
 
