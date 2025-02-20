@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shortly - کوتاه کننده لینک</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #7f7fd5, #86a8e7, #91eae4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 2.2em;
+        }
+
+        p {
+            color: #34495e;
+            margin-bottom: 25px;
+            font-size: 1.1em;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            text-align: left;
+            direction: ltr;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #7f7fd5;
+            box-shadow: 0 0 10px rgba(127, 127, 213, 0.2);
+        }
+
+        button {
+            background: linear-gradient(45deg, #7f7fd5, #86a8e7);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(127, 127, 213, 0.4);
+        }
+
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            background: rgba(127, 127, 213, 0.1);
+            display: none;
+        }
+
+        #result.show {
+            display: block;
+        }
+
+        #result a {
+            color: #7f7fd5;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .version {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>کوتاه کننده لینک Shortly</h1>
+        <p>لینک خود را برای کوتاه شدن وارد کنید:</p>
+        <input type="text" id="url" placeholder="لینک را اینجا وارد کنید" dir="ltr">
+        <button onclick="shortenURL()">کوتاه کن</button>
+        <p id="result"></p>
+    </div>
+    <div class="version">نسخه ۰.۱ بتا</div>
+
+    <script>
+        function shortenURL() {
+            const url = document.getElementById("url").value;
+            const result = document.getElementById("result");
+
+            fetch("/create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ url })
+            })
+            .then(response => response.json())
+            .then(data => {
+                result.innerHTML = `لینک کوتاه: <a href="${data.short_url}" target="_blank">${data.short_url}</a>`;
+                result.classList.add('show');
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                result.innerHTML = "خطا در کوتاه کردن لینک";
+                result.classList.add('show');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .number {
+            font-size: 150px;
+            font-weight: bold;
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .text {
+            font-size: 24px;
+            margin: 20px 0;
+            opacity: 0.8;
+        }
+
+        .button {
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            transform: scale(1.1);
+        }
+
+        .astronaut {
+            position: absolute;
+            font-size: 100px;
+            animation: float-astronaut 8s ease-in-out infinite;
+            user-select: none;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite;
+            opacity: var(--opacity);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes float-astronaut {
+            0%, 100% { transform: translate(0, 0) rotate(10deg); }
+            50% { transform: translate(30px, -30px) rotate(-10deg); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: var(--opacity); }
+            50% { opacity: 0.2; }
+        }
+
+        #ufo {
+            position: absolute;
+            font-size: 80px;
+            animation: float 10s ease-in-out infinite;
+            user-select: none;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="container">
+        <div class="number">404</div>
+        <div class="text">Oops! Looks like this page got lost in space</div>
+        <div id="astronaut" class="astronaut">👨‍🚀</div>
+        <div id="ufo">🛸</div>
+        <a href="/" class="button">Return Home</a>
+    </div>
+
+    <script>
+        // Create twinkling stars
+        const starsContainer = document.querySelector('.stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 3 + 1;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+            star.style.setProperty('--opacity', Math.random() * 0.7 + 0.3);
+            starsContainer.appendChild(star);
+        }
+
+        // Make astronaut and UFO draggable
+        const astronaut = document.getElementById('astronaut');
+        const ufo = document.getElementById('ufo');
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        [astronaut, ufo].forEach(element => {
+            element.addEventListener('mousedown', dragStart);
+            element.addEventListener('mouseup', dragEnd);
+            element.addEventListener('mousemove', drag);
+            element.addEventListener('click', () => {
+                element.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    element.style.transform = 'scale(1)';
+                }, 200);
+            });
+        });
+
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+
+            if (e.target === astronaut || e.target === ufo) {
+                isDragging = true;
+            }
+        }
+
+        function dragEnd() {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                xOffset = currentX;
+                yOffset = currentY;
+
+                e.target.style.transform = `translate(${currentX}px, ${currentY}px)`;
+            }
+        }
+    </script>
+</body>
+</html>
