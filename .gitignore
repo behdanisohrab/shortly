@@ -1,0 +1,9 @@
+shortly
+shortly.db
+shortly.db-shm
+shortly.db-wal
+.env
+*.exe
+*.dll
+*.so
+*.dylib

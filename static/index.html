@@ -3,141 +3,890 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shortly - کوتاه کننده لینک</title>
+    <title>Shortly - کوتاه‌کننده لینک</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap');
 
-        * {
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Vazirmatn', Arial, sans-serif;
         }
 
         body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: #111827;
+            color: #e5e7eb;
             min-height: 100vh;
-            background: linear-gradient(135deg, #7f7fd5, #86a8e7, #91eae4);
+            line-height: 1.6;
+        }
+
+        a { color: #818cf8; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .nav {
+            background: #1f2937;
+            border-bottom: 1px solid #374151;
+            padding: 0 1.5rem;
+            height: 56px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            padding: 20px;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
         }
 
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
+        .nav-brand {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #818cf8;
         }
 
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 2.2em;
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
         }
 
-        p {
-            color: #34495e;
-            margin-bottom: 25px;
-            font-size: 1.1em;
-        }
-
-        input {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1em;
-            transition: all 0.3s ease;
-            text-align: left;
-            direction: ltr;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #7f7fd5;
-            box-shadow: 0 0 10px rgba(127, 127, 213, 0.2);
-        }
-
-        button {
-            background: linear-gradient(45deg, #7f7fd5, #86a8e7);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 1.1em;
+        .nav-link {
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
+            font-size: 0.85rem;
+            border: none;
+            background: none;
+            color: #9ca3af;
+            font-family: inherit;
         }
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(127, 127, 213, 0.4);
+        .nav-link:hover { color: #e5e7eb; background: #374151; }
+        .nav-link.active { color: #fff; background: #4f46e5; }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
         }
 
-        #result {
-            margin-top: 30px;
-            padding: 20px;
+        .btn-primary { background: #4f46e5; color: #fff; }
+        .btn-primary:hover { background: #4338ca; }
+        .btn-secondary { background: #374151; color: #e5e7eb; }
+        .btn-secondary:hover { background: #4b5563; }
+        .btn-danger { background: #dc2626; color: #fff; }
+        .btn-danger:hover { background: #b91c1c; }
+        .btn-ghost { background: none; color: #9ca3af; }
+        .btn-ghost:hover { color: #e5e7eb; }
+        .btn-sm { padding: 0.3rem 0.6rem; font-size: 0.8rem; }
+
+        .wrap {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        .page { display: none; }
+        .page.active { display: block; }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #f9fafb;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero p {
+            color: #9ca3af;
+            font-size: 1rem;
+            max-width: 28rem;
+            margin: 0 auto;
+        }
+
+        .box {
+            background: #1f2937;
+            border: 1px solid #374151;
             border-radius: 10px;
-            background: rgba(127, 127, 213, 0.1);
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .input-row input {
+            flex: 1;
+            padding: 0.7rem 1rem;
+            background: #111827;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            color: #e5e7eb;
+            font-size: 0.95rem;
+            font-family: monospace;
+            direction: ltr;
+            text-align: left;
+            outline: none;
+        }
+
+        .input-row input:focus { border-color: #4f46e5; }
+        .input-row input::placeholder { color: #6b7280; }
+
+        .toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #9ca3af;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-top: 0.75rem;
+            user-select: none;
+        }
+
+        .toggle:hover { color: #e5e7eb; }
+
+        .opts {
             display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
         }
 
-        #result.show {
+        .opts.open { display: grid; }
+
+        .field { display: flex; flex-direction: column; gap: 0.3rem; }
+        .field label { font-size: 0.75rem; color: #9ca3af; }
+
+        .field input, .field select {
+            padding: 0.5rem 0.7rem;
+            background: #111827;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            color: #e5e7eb;
+            font-size: 0.85rem;
+            font-family: inherit;
+            outline: none;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .field input:focus, .field select:focus { border-color: #4f46e5; }
+
+        .result {
+            display: none;
+            background: #111827;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .result.open { display: block; }
+
+        .result-link {
+            font-family: monospace;
+            font-size: 1rem;
+            direction: ltr;
             display: block;
-        }
-
-        #result a {
-            color: #7f7fd5;
-            text-decoration: none;
+            margin-bottom: 0.75rem;
             word-break: break-all;
         }
 
-        .version {
+        .result-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+        .qr-box {
+            display: none;
+            margin-top: 0.75rem;
+            text-align: center;
+        }
+
+        .qr-box.open { display: block; }
+
+        .qr-box img {
+            border-radius: 6px;
+            background: #fff;
+            padding: 6px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2.5rem;
+        }
+
+        .feat {
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .feat h3 { font-size: 0.95rem; margin-bottom: 0.4rem; color: #f9fafb; }
+        .feat p { color: #9ca3af; font-size: 0.8rem; }
+
+        .card {
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .card h2 { font-size: 1.1rem; margin-bottom: 1rem; }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat {
+            background: #111827;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-val {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #818cf8;
+        }
+
+        .stat-lbl {
+            color: #9ca3af;
+            font-size: 0.8rem;
+            margin-top: 0.2rem;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+
+        th {
+            text-align: right;
+            padding: 0.6rem;
+            color: #9ca3af;
+            font-weight: 500;
+            border-bottom: 1px solid #374151;
+            font-size: 0.75rem;
+        }
+
+        td {
+            padding: 0.6rem;
+            border-bottom: 1px solid #1f2937;
+        }
+
+        .ltr-cell {
+            direction: ltr;
+            text-align: left;
+            font-family: monospace;
+            font-size: 0.8rem;
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .badge-ok { background: rgba(34,197,94,0.15); color: #22c55e; }
+        .badge-warn { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .badge-info { background: rgba(99,102,241,0.15); color: #818cf8; }
+
+        .tabs {
+            display: flex;
+            gap: 2px;
+            background: #111827;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 3px;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 0.5rem;
+            text-align: center;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #9ca3af;
+            border: none;
+            background: none;
+            font-family: inherit;
+        }
+
+        .tab:hover { color: #e5e7eb; }
+        .tab.active { background: #4f46e5; color: #fff; }
+
+        .overlay {
+            display: none;
             position: fixed;
-            bottom: 20px;
-            left: 20px;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9em;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .overlay.open { display: flex; }
+
+        .modal {
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 10px;
+            padding: 1.5rem;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .modal h2 { margin-bottom: 1rem; font-size: 1.15rem; }
+        .modal .field { margin-bottom: 0.75rem; }
+        .modal .field input { width: 100%; }
+        .modal-footer { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem; }
+
+        .empty { text-align: center; padding: 2rem; color: #6b7280; }
+
+        .toast-wrap {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast {
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            padding: 0.6rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .toast-ok { border-right: 3px solid #22c55e; }
+        .toast-err { border-right: 3px solid #dc2626; }
+
+        .loading { text-align: center; padding: 2rem; color: #6b7280; }
+
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 1.5rem; }
+            .input-row { flex-direction: column; }
+            .opts.open { grid-template-columns: 1fr; }
+            .stats-row { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>کوتاه کننده لینک Shortly</h1>
-        <p>لینک خود را برای کوتاه شدن وارد کنید:</p>
-        <input type="text" id="url" placeholder="لینک را اینجا وارد کنید" dir="ltr">
-        <button onclick="shortenURL()">کوتاه کن</button>
-        <p id="result"></p>
+    <nav class="nav">
+        <div class="nav-brand">Shortly</div>
+        <div class="nav-links">
+            <button class="nav-link active" data-page="home">خانه</button>
+            <button class="nav-link" data-page="dashboard" id="nav-dash" style="display:none">لینک‌های من</button>
+            <button class="nav-link" data-page="admin" id="nav-admin" style="display:none">مدیریت</button>
+            <button class="btn btn-sm btn-secondary" id="btn-login" onclick="openModal('login')">ورود</button>
+            <button class="btn btn-sm btn-primary" id="btn-reg" onclick="openModal('register')">ثبت‌نام</button>
+            <span id="user-box" style="display:none">
+                <span id="user-name" style="color:#9ca3af;font-size:0.8rem;margin-left:0.5rem"></span>
+                <button class="btn btn-sm btn-ghost" onclick="logout()">خروج</button>
+            </span>
+        </div>
+    </nav>
+
+    <div class="wrap">
+        <div class="page active" id="page-home">
+            <div class="hero">
+                <h1>لینک‌هاتو کوتاه کن</h1>
+                <p>کوتاه‌کننده لینک رایگان با آمار بازدید، کد QR و لینک‌های سفارشی</p>
+            </div>
+            <div class="box">
+                <div class="input-row">
+                    <input type="url" id="url-input" placeholder="https://example.com/your-long-url" dir="ltr">
+                    <button class="btn btn-primary" id="shorten-btn" onclick="shorten()">کوتاه کن</button>
+                </div>
+                <div class="toggle" onclick="toggleOpts()">
+                    <span id="opts-arrow">&#9666;</span>
+                    تنظیمات پیشرفته
+                </div>
+                <div class="opts" id="opts">
+                    <div class="field">
+                        <label>کد سفارشی (اختیاری)</label>
+                        <input type="text" id="custom-code" placeholder="my-link" maxlength="20">
+                    </div>
+                    <div class="field">
+                        <label>نوع ریدایرکت</label>
+                        <select id="redirect-type">
+                            <option value="302">۳۰۲ - موقت</option>
+                            <option value="301">۳۰۱ - دائمی</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>انقضا بعد از (ساعت، ۰ = بدون انقضا)</label>
+                        <input type="number" id="expires-in" value="0" min="0">
+                    </div>
+                    <div class="field">
+                        <label>حداکثر استفاده (۰ = نامحدود)</label>
+                        <input type="number" id="max-uses" value="0" min="0">
+                    </div>
+                </div>
+                <div class="result" id="result">
+                    <a class="result-link" id="result-link" href="#" target="_blank" dir="ltr"></a>
+                    <div class="result-btns">
+                        <button class="btn btn-sm btn-secondary" onclick="copyLink()">کپی</button>
+                        <button class="btn btn-sm btn-secondary" onclick="showQR()">کد QR</button>
+                        <button class="btn btn-sm btn-ghost" onclick="goStats()">آمار</button>
+                    </div>
+                    <div class="qr-box" id="qr-box">
+                        <img id="qr-img" src="" alt="QR" width="180" height="180">
+                        <br>
+                        <button class="btn btn-sm btn-secondary" onclick="dlQR()" style="margin-top:0.5rem">دانلود QR</button>
+                    </div>
+                </div>
+            </div>
+            <div class="features">
+                <div class="feat">
+                    <h3>لینک سفارشی</h3>
+                    <p>کد کوتاه دلخواه خودتون رو انتخاب کنید</p>
+                </div>
+                <div class="feat">
+                    <h3>آمار کلیک</h3>
+                    <p>تعداد کلیک‌ها و اطلاعات بازدیدکنندگان رو ببینید</p>
+                </div>
+                <div class="feat">
+                    <h3>انقضای لینک</h3>
+                    <p>زمان انقضا یا حداکثر تعداد استفاده تعیین کنید</p>
+                </div>
+                <div class="feat">
+                    <h3>کد QR</h3>
+                    <p>برای هر لینک کوتاه کد QR بسازید و دانلود کنید</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page-dashboard">
+            <h1 style="margin-bottom:1.5rem;font-size:1.5rem">لینک‌های من</h1>
+            <div id="my-urls"></div>
+        </div>
+
+        <div class="page" id="page-admin">
+            <h1 style="margin-bottom:1.5rem;font-size:1.5rem">پنل مدیریت</h1>
+            <div class="stats-row" id="admin-stats"></div>
+            <div class="tabs">
+                <button class="tab active" data-tab="urls">لینک‌ها</button>
+                <button class="tab" data-tab="users">کاربران</button>
+                <button class="tab" data-tab="blacklist">لیست سیاه</button>
+            </div>
+            <div id="admin-content"></div>
+        </div>
+
+        <div class="page" id="page-stats">
+            <button class="btn btn-ghost" onclick="go('home')" style="margin-bottom:1rem">&#8594; بازگشت</button>
+            <div id="stats-content"></div>
+        </div>
     </div>
-    <div class="version">نسخه ۰.۱ بتا</div>
+
+    <div class="overlay" id="modal-login">
+        <div class="modal">
+            <h2>ورود به حساب</h2>
+            <div class="field"><label>نام کاربری</label><input type="text" id="login-user" dir="ltr"></div>
+            <div class="field"><label>رمز عبور</label><input type="password" id="login-pass" dir="ltr"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('login')">انصراف</button>
+                <button class="btn btn-primary" onclick="login()">ورود</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-register">
+        <div class="modal">
+            <h2>ثبت‌نام</h2>
+            <div class="field"><label>نام کاربری</label><input type="text" id="reg-user" dir="ltr"></div>
+            <div class="field"><label>ایمیل</label><input type="email" id="reg-email" dir="ltr" placeholder="email@example.com"></div>
+            <div class="field"><label>رمز عبور (حداقل ۶ کاراکتر)</label><input type="password" id="reg-pass" dir="ltr"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('register')">انصراف</button>
+                <button class="btn btn-primary" onclick="register()">ثبت‌نام</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-blacklist">
+        <div class="modal">
+            <h2>افزودن به لیست سیاه</h2>
+            <div class="field"><label>دامنه</label><input type="text" id="bl-domain" dir="ltr" placeholder="example.com"></div>
+            <div class="field"><label>دلیل</label><input type="text" id="bl-reason" placeholder="محتوای مخرب"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('blacklist')">انصراف</button>
+                <button class="btn btn-danger" onclick="addBL()">مسدود کردن</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-wrap" id="toasts"></div>
 
     <script>
-        function shortenURL() {
-            const url = document.getElementById("url").value;
-            const result = document.getElementById("result");
+    var me = null;
+    var lastCode = '';
 
-            fetch("/create", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ url })
-            })
-            .then(response => response.json())
-            .then(data => {
-                result.innerHTML = `لینک کوتاه: <a href="${data.short_url}" target="_blank">${data.short_url}</a>`;
-                result.classList.add('show');
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                result.innerHTML = "خطا در کوتاه کردن لینک";
-                result.classList.add('show');
-            });
+    function token() { return localStorage.getItem('token'); }
+
+    async function api(path, opts) {
+        opts = opts || {};
+        var h = {'Content-Type':'application/json'};
+        var t = token();
+        if (t) h['Authorization'] = 'Bearer ' + t;
+        if (opts.headers) Object.assign(h, opts.headers);
+        opts.headers = h;
+        var r = await fetch(path, opts);
+        var d = await r.json();
+        if (!r.ok) throw new Error(d.error || 'خطا');
+        return d;
+    }
+
+    function toast(msg, ok) {
+        var el = document.createElement('div');
+        el.className = 'toast ' + (ok !== false ? 'toast-ok' : 'toast-err');
+        el.textContent = msg;
+        document.getElementById('toasts').appendChild(el);
+        setTimeout(function() { el.remove(); }, 3000);
+    }
+
+    function go(page) {
+        document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+        document.querySelectorAll('.nav-link').forEach(function(l) { l.classList.remove('active'); });
+        document.getElementById('page-' + page).classList.add('active');
+        var btn = document.querySelector('[data-page="' + page + '"]');
+        if (btn) btn.classList.add('active');
+        if (page === 'dashboard' && me) loadMyURLs();
+        if (page === 'admin' && me && me.is_admin) loadAdmin();
+    }
+
+    function openModal(n) { document.getElementById('modal-' + n).classList.add('open'); }
+    function closeModal(n) { document.getElementById('modal-' + n).classList.remove('open'); }
+
+    function updateNav() {
+        var logged = !!me;
+        document.getElementById('btn-login').style.display = logged ? 'none' : '';
+        document.getElementById('btn-reg').style.display = logged ? 'none' : '';
+        document.getElementById('user-box').style.display = logged ? '' : 'none';
+        document.getElementById('nav-dash').style.display = logged ? '' : 'none';
+        document.getElementById('nav-admin').style.display = (me && me.is_admin) ? '' : 'none';
+        if (me) document.getElementById('user-name').textContent = me.username;
+    }
+
+    async function checkAuth() {
+        if (!token()) { updateNav(); return; }
+        try {
+            me = await api('/api/auth/me');
+        } catch(e) {
+            localStorage.removeItem('token');
+            me = null;
         }
+        updateNav();
+    }
+
+    async function login() {
+        try {
+            var d = await api('/api/auth/login', {
+                method: 'POST',
+                body: JSON.stringify({
+                    username: document.getElementById('login-user').value,
+                    password: document.getElementById('login-pass').value
+                })
+            });
+            localStorage.setItem('token', d.token);
+            me = d.user;
+            updateNav();
+            closeModal('login');
+            toast('خوش آمدید');
+        } catch(e) { toast(e.message, false); }
+    }
+
+    async function register() {
+        try {
+            var d = await api('/api/auth/register', {
+                method: 'POST',
+                body: JSON.stringify({
+                    username: document.getElementById('reg-user').value,
+                    email: document.getElementById('reg-email').value,
+                    password: document.getElementById('reg-pass').value
+                })
+            });
+            localStorage.setItem('token', d.token);
+            me = d.user;
+            updateNav();
+            closeModal('register');
+            toast('ثبت‌نام با موفقیت انجام شد');
+        } catch(e) { toast(e.message, false); }
+    }
+
+    async function logout() {
+        try { await api('/api/auth/logout'); } catch(e) {}
+        localStorage.removeItem('token');
+        me = null;
+        updateNav();
+        go('home');
+        toast('خارج شدید');
+    }
+
+    function toggleOpts() {
+        var el = document.getElementById('opts');
+        var open = el.classList.toggle('open');
+        document.getElementById('opts-arrow').innerHTML = open ? '&#9662;' : '&#9666;';
+    }
+
+    async function shorten() {
+        var url = document.getElementById('url-input').value.trim();
+        if (!url) { toast('لطفا یک لینک وارد کنید', false); return; }
+        var btn = document.getElementById('shorten-btn');
+        btn.disabled = true;
+        try {
+            var d = await api('/api/urls/create', {
+                method: 'POST',
+                body: JSON.stringify({
+                    url: url,
+                    custom_code: document.getElementById('custom-code').value.trim(),
+                    redirect_type: parseInt(document.getElementById('redirect-type').value),
+                    expires_in: parseInt(document.getElementById('expires-in').value) || 0,
+                    max_uses: parseInt(document.getElementById('max-uses').value) || 0
+                })
+            });
+            lastCode = d.code;
+            var link = document.getElementById('result-link');
+            link.href = d.short_url;
+            link.textContent = d.short_url;
+            document.getElementById('result').classList.add('open');
+            document.getElementById('qr-box').classList.remove('open');
+            toast('لینک کوتاه شد');
+        } catch(e) { toast(e.message, false); }
+        btn.disabled = false;
+    }
+
+    function copyLink() {
+        navigator.clipboard.writeText(document.getElementById('result-link').textContent)
+            .then(function() { toast('کپی شد'); });
+    }
+
+    function showQR() {
+        document.getElementById('qr-img').src = '/api/qr?code=' + lastCode + '&size=256';
+        document.getElementById('qr-box').classList.add('open');
+    }
+
+    function dlQR() {
+        var a = document.createElement('a');
+        a.href = '/api/qr?code=' + lastCode + '&size=512';
+        a.download = 'qr-' + lastCode + '.png';
+        a.click();
+    }
+
+    function goStats() { viewStats(lastCode); }
+
+    async function viewStats(code) {
+        lastCode = code;
+        go('stats');
+        var c = document.getElementById('stats-content');
+        c.innerHTML = '<div class="loading">در حال بارگذاری...</div>';
+        try {
+            var d = await api('/api/urls/stats?code=' + code);
+            var u = d.url;
+            var clicks = d.clicks || [];
+            var html = '<div class="card"><h2>آمار لینک</h2>';
+            html += '<div class="stats-row">';
+            html += '<div class="stat"><div class="stat-val">' + d.total_clicks + '</div><div class="stat-lbl">کل کلیک‌ها</div></div>';
+            html += '<div class="stat"><div class="stat-val">' + (u.max_uses || '\u221e') + '</div><div class="stat-lbl">حداکثر استفاده</div></div>';
+            html += '<div class="stat"><div class="stat-val">' + u.use_count + '</div><div class="stat-lbl">استفاده شده</div></div>';
+            html += '</div>';
+            html += '<p style="color:#9ca3af;font-size:0.8rem;margin-bottom:0.4rem">لینک کوتاه: <a href="' + d.short_url + '" target="_blank" dir="ltr">' + d.short_url + '</a></p>';
+            html += '<p style="color:#9ca3af;font-size:0.8rem;margin-bottom:0.4rem">لینک اصلی: <span dir="ltr">' + u.url + '</span></p>';
+            html += '<p style="color:#9ca3af;font-size:0.8rem">ساخته شده: ' + new Date(u.created_at).toLocaleString('fa-IR');
+            if (u.expires_at) html += ' | انقضا: ' + new Date(u.expires_at).toLocaleString('fa-IR');
+            html += '</p></div>';
+            if (clicks.length) {
+                html += '<div class="card"><h2>کلیک‌های اخیر</h2><div style="overflow-x:auto"><table>';
+                html += '<thead><tr><th>زمان</th><th>IP</th><th>مرورگر</th><th>ارجاع</th></tr></thead><tbody>';
+                clicks.slice(0, 50).forEach(function(cl) {
+                    html += '<tr><td>' + new Date(cl.clicked_at).toLocaleString('fa-IR') + '</td>';
+                    html += '<td class="ltr-cell">' + (cl.ip_address || '-') + '</td>';
+                    html += '<td class="ltr-cell">' + (cl.user_agent || '-') + '</td>';
+                    html += '<td class="ltr-cell">' + (cl.referer || '-') + '</td></tr>';
+                });
+                html += '</tbody></table></div></div>';
+            } else {
+                html += '<div class="empty">هنوز کلیکی ثبت نشده</div>';
+            }
+            c.innerHTML = html;
+        } catch(e) { c.innerHTML = '<div class="empty">خطا در بارگذاری</div>'; }
+    }
+
+    async function loadMyURLs() {
+        var c = document.getElementById('my-urls');
+        c.innerHTML = '<div class="loading">در حال بارگذاری...</div>';
+        try {
+            var urls = await api('/api/urls/my');
+            if (!urls || !urls.length) {
+                c.innerHTML = '<div class="empty">هنوز لینکی نساختید</div>';
+                return;
+            }
+            var html = '<div style="overflow-x:auto"><table><thead><tr><th>لینک کوتاه</th><th>لینک اصلی</th><th>کلیک</th><th>تاریخ</th><th></th></tr></thead><tbody>';
+            urls.forEach(function(u) {
+                var code = u.code.split('/').pop();
+                html += '<tr><td><a href="' + u.code + '" target="_blank" dir="ltr">' + u.code + '</a></td>';
+                html += '<td class="ltr-cell">' + u.url + '</td>';
+                html += '<td><span class="badge badge-info">' + u.total_clicks + '</span></td>';
+                html += '<td>' + new Date(u.created_at).toLocaleDateString('fa-IR') + '</td>';
+                html += '<td><button class="btn btn-sm btn-ghost" onclick="viewStats(\'' + code + '\')">آمار</button> ';
+                html += '<button class="btn btn-sm btn-danger" onclick="delURL(' + u.id + ')">حذف</button></td></tr>';
+            });
+            html += '</tbody></table></div>';
+            c.innerHTML = html;
+        } catch(e) { c.innerHTML = '<div class="empty">خطا در بارگذاری</div>'; }
+    }
+
+    async function delURL(id) {
+        if (!confirm('آیا مطمئنید؟')) return;
+        try {
+            await api('/api/urls/delete?id=' + id, {method:'DELETE'});
+            toast('حذف شد');
+            loadMyURLs();
+        } catch(e) { toast(e.message, false); }
+    }
+
+    async function loadAdmin() {
+        try {
+            var s = await api('/api/admin/stats');
+            document.getElementById('admin-stats').innerHTML =
+                '<div class="stat"><div class="stat-val">' + s.total_urls + '</div><div class="stat-lbl">کل لینک‌ها</div></div>' +
+                '<div class="stat"><div class="stat-val">' + s.total_clicks + '</div><div class="stat-lbl">کل کلیک‌ها</div></div>' +
+                '<div class="stat"><div class="stat-val">' + s.total_users + '</div><div class="stat-lbl">کل کاربران</div></div>';
+        } catch(e) {}
+        loadAdminTab('urls');
+    }
+
+    async function loadAdminTab(tab) {
+        var c = document.getElementById('admin-content');
+        c.innerHTML = '<div class="loading">در حال بارگذاری...</div>';
+        if (tab === 'urls') {
+            try {
+                var d = await api('/api/admin/urls');
+                if (!d.urls || !d.urls.length) { c.innerHTML = '<div class="empty">بدون لینک</div>'; return; }
+                var html = '<div style="overflow-x:auto"><table><thead><tr><th>کد</th><th>لینک</th><th>کاربر</th><th>کلیک</th><th>نوع</th><th>تاریخ</th><th></th></tr></thead><tbody>';
+                d.urls.forEach(function(u) {
+                    html += '<tr><td><code style="color:#818cf8">' + u.code + '</code></td>';
+                    html += '<td class="ltr-cell">' + u.url + '</td>';
+                    html += '<td>' + (u.user_id || 'ناشناس') + '</td>';
+                    html += '<td><span class="badge badge-info">' + u.total_clicks + '</span></td>';
+                    html += '<td><span class="badge ' + (u.custom_code ? 'badge-ok' : 'badge-warn') + '">' + (u.custom_code ? 'سفارشی' : 'تصادفی') + '</span></td>';
+                    html += '<td>' + new Date(u.created_at).toLocaleDateString('fa-IR') + '</td>';
+                    html += '<td><button class="btn btn-sm btn-danger" onclick="adminDel(' + u.id + ')">حذف</button></td></tr>';
+                });
+                html += '</tbody></table></div>';
+                c.innerHTML = html;
+            } catch(e) { c.innerHTML = '<div class="empty">خطا</div>'; }
+        } else if (tab === 'users') {
+            try {
+                var d = await api('/api/admin/users');
+                var html = '<div style="overflow-x:auto"><table><thead><tr><th>شناسه</th><th>نام کاربری</th><th>ایمیل</th><th>نقش</th><th>تاریخ</th><th></th></tr></thead><tbody>';
+                (d.users || []).forEach(function(u) {
+                    html += '<tr><td>' + u.id + '</td><td>' + u.username + '</td>';
+                    html += '<td class="ltr-cell">' + u.email + '</td>';
+                    html += '<td><span class="badge ' + (u.is_admin ? 'badge-ok' : 'badge-warn') + '">' + (u.is_admin ? 'مدیر' : 'کاربر') + '</span></td>';
+                    html += '<td>' + new Date(u.created_at).toLocaleDateString('fa-IR') + '</td>';
+                    html += '<td><button class="btn btn-sm btn-secondary" onclick="toggleRole(' + u.id + ',' + !u.is_admin + ')">' + (u.is_admin ? 'حذف مدیریت' : 'مدیر کردن') + '</button></td></tr>';
+                });
+                html += '</tbody></table></div>';
+                c.innerHTML = html;
+            } catch(e) { c.innerHTML = '<div class="empty">خطا</div>'; }
+        } else if (tab === 'blacklist') {
+            try {
+                var d = await api('/api/admin/blacklist');
+                var html = '<div style="margin-bottom:1rem"><button class="btn btn-sm btn-danger" onclick="openModal(\'blacklist\')">افزودن دامنه</button></div>';
+                if (!d.length) { html += '<div class="empty">لیست سیاه خالی است</div>'; }
+                else {
+                    html += '<div style="overflow-x:auto"><table><thead><tr><th>دامنه</th><th>دلیل</th><th>تاریخ</th><th></th></tr></thead><tbody>';
+                    d.forEach(function(b) {
+                        html += '<tr><td class="ltr-cell">' + b.domain + '</td>';
+                        html += '<td>' + (b.reason || '-') + '</td>';
+                        html += '<td>' + b.added_at + '</td>';
+                        html += '<td><button class="btn btn-sm btn-ghost" onclick="rmBL(\'' + b.domain + '\')">حذف</button></td></tr>';
+                    });
+                    html += '</tbody></table></div>';
+                }
+                c.innerHTML = html;
+            } catch(e) { c.innerHTML = '<div class="empty">خطا</div>'; }
+        }
+    }
+
+    async function adminDel(id) {
+        if (!confirm('حذف شود؟')) return;
+        try { await api('/api/admin/urls/delete?id=' + id, {method:'DELETE'}); toast('حذف شد'); loadAdminTab('urls'); }
+        catch(e) { toast(e.message, false); }
+    }
+
+    async function toggleRole(id, admin) {
+        try {
+            await api('/api/admin/set-admin', {method:'POST', body:JSON.stringify({user_id:id, is_admin:admin})});
+            toast('بروزرسانی شد');
+            loadAdminTab('users');
+        } catch(e) { toast(e.message, false); }
+    }
+
+    async function addBL() {
+        try {
+            await api('/api/admin/blacklist', {
+                method:'POST',
+                body:JSON.stringify({domain:document.getElementById('bl-domain').value, reason:document.getElementById('bl-reason').value})
+            });
+            closeModal('blacklist');
+            toast('مسدود شد');
+            loadAdminTab('blacklist');
+        } catch(e) { toast(e.message, false); }
+    }
+
+    async function rmBL(domain) {
+        if (!confirm('حذف ' + domain + ' از لیست سیاه؟')) return;
+        try { await api('/api/admin/blacklist?domain=' + encodeURIComponent(domain), {method:'DELETE'}); toast('حذف شد'); loadAdminTab('blacklist'); }
+        catch(e) { toast(e.message, false); }
+    }
+
+    document.querySelectorAll('[data-page]').forEach(function(btn) {
+        btn.addEventListener('click', function() { go(btn.dataset.page); });
+    });
+
+    document.querySelectorAll('[data-tab]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+            btn.classList.add('active');
+            loadAdminTab(btn.dataset.tab);
+        });
+    });
+
+    document.getElementById('url-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') shorten();
+    });
+
+    document.querySelectorAll('.overlay').forEach(function(o) {
+        o.addEventListener('click', function(e) { if (e.target === o) o.classList.remove('open'); });
+    });
+
+    checkAuth();
     </script>
 </body>
 </html>
